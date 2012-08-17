@@ -385,7 +385,7 @@ static void ngx_http_upstream_hash_next_peer(ngx_http_upstream_hash_peer_data_t 
         )) {
        /* hack to prevent 100% cpu usage due bug */
        if (*tries < 0) {
-           break;
+           *tries = 0;
        }
        uhpd->current_key.len = ngx_sprintf(uhpd->current_key.data, "%d%V",
            ++uhpd->try_i, &uhpd->original_key) - uhpd->current_key.data;
