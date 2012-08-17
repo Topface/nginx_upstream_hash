@@ -383,6 +383,10 @@ static void ngx_http_upstream_hash_next_peer(ngx_http_upstream_hash_peer_data_t 
         || ngx_http_healthcheck_is_down(uhpd->peers->peer[current].health_index, log)
 #endif
         )) {
+       /* hack to prevent 100% cpu usage due bug */
+       if (*tries < 0) {
+           break;
+       }
        uhpd->current_key.len = ngx_sprintf(uhpd->current_key.data, "%d%V",
            ++uhpd->try_i, &uhpd->original_key) - uhpd->current_key.data;
        uhpd->hash += ngx_http_upstream_hash_crc32(uhpd->current_key.data,
