@@ -234,7 +234,7 @@ ngx_http_upstream_init_hash_peer(ngx_http_request_t *r,
 
     /* In case this one is marked down */
     ngx_http_upstream_hash_next_peer(uhpd, &r->upstream->peer.tries, r->connection->log);
-    if ((ngx_int_t)r->upstream->peer.tries == -1) {
+    if ((ngx_int_t)r->upstream->peer.tries < 0) {
         return NGX_ERROR;
     }
 
