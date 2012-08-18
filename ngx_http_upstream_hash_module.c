@@ -372,6 +372,12 @@ ngx_http_upstream_save_hash_peer_session(ngx_peer_connection_t *pc, void *data) 
 static void ngx_http_upstream_hash_next_peer(ngx_http_upstream_hash_peer_data_t *uhpd,
         ngx_uint_t *tries, ngx_log_t *log) {
 
+    /* magic number 1000: if too many tries - we've got uint overflow */
+    if (*tries > 1000) {
+        *tries = -1;
+        return;
+    }
+
     ngx_uint_t current;
     current = uhpd->hash % uhpd->peers->number;
     //  Loop while there is a try left, we're on one we haven't tried, and
